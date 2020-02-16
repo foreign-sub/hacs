@@ -34,7 +34,8 @@ async def test_download_content(aresponses, tmp_path, event_loop):
         hacs.hass.loop = event_loop
         hacs.session = session
         await download_content(repository)
-        assert os.path.exists(f"{repository.content.path.local}/test/path/file.file")
+        assert os.path.exists(
+            f"{repository.content.path.local}/test/path/file.file")
 
 
 @pytest.mark.asyncio
@@ -89,4 +90,5 @@ async def test_download_content_integration(aresponses, tmp_path, event_loop):
         hacs.session = session
         await download_content(repository)
         for path in repository.tree:
-            assert os.path.exists(f"{hacs.system.config_path}/{path.full_path}")
+            assert os.path.exists(
+                f"{hacs.system.config_path}/{path.full_path}")

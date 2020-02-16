@@ -266,7 +266,8 @@ class HacsRepository:
                 self.hacs.configuration.token,
                 self.information.full_name,
             )
-            self.data = self.data.create_from_dict(self.repository_object.attributes)
+            self.data = self.data.create_from_dict(
+                self.repository_object.attributes)
 
         # Set id
         self.information.uid = str(self.data.id)
@@ -288,7 +289,8 @@ class HacsRepository:
         self.repository_object = await get_repository(
             self.hacs.session, self.hacs.configuration.token, self.information.full_name
         )
-        self.data = self.data.create_from_dict(self.repository_object.attributes)
+        self.data = self.data.create_from_dict(
+            self.repository_object.attributes)
 
         # Set ref
         self.ref = version_to_install(self)
@@ -333,7 +335,8 @@ class HacsRepository:
             contents = False
 
             for release in self.releases.objects:
-                self.logger.info(f"ref: {self.ref}  ---  tag: {release.tag_name}")
+                self.logger.info(
+                    f"ref: {self.ref}  ---  tag: {release.tag_name}")
                 if release.tag_name == self.ref.split("/")[1]:
                     contents = release.assets
 
@@ -344,7 +347,8 @@ class HacsRepository:
                 filecontent = await async_download_file(content.download_url)
 
                 if filecontent is None:
-                    validate.errors.append(f"[{content.name}] was not downloaded.")
+                    validate.errors.append(
+                        f"[{content.name}] was not downloaded.")
                     continue
 
                 result = await async_save_file(
