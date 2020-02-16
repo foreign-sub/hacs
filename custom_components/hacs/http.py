@@ -22,7 +22,8 @@ class HacsFrontend(HomeAssistantView):
 
         if requested_file.startswith("frontend-"):
             if hacs.configuration.debug:
-                servefile = await hacs.hass.async_add_executor_job(locate_debug_gz)
+                servefile = await hacs.hass.async_add_executor_job(
+                    locate_debug_gz)
                 hacs.logger.debug("Serving DEBUG frontend")
             else:
                 servefile = await hacs.hass.async_add_executor_job(locate_gz)
@@ -31,8 +32,7 @@ class HacsFrontend(HomeAssistantView):
                 return web.FileResponse(servefile)
         elif requested_file == "iconset.js":
             return web.FileResponse(
-                f"{hacs.system.config_path}/custom_components/hacs/iconset.js"
-            )
+                f"{hacs.system.config_path}/custom_components/hacs/iconset.js")
 
         try:
             if requested_file.startswith("themes"):
@@ -45,19 +45,20 @@ class HacsFrontend(HomeAssistantView):
                 file += ".gz"
 
             if os.path.exists(file):
-                hacs.logger.debug("Serving {} from {}".format(requested_file, file))
+                hacs.logger.debug("Serving {} from {}".format(
+                    requested_file, file))
                 response = web.FileResponse(file)
-                response.headers["Cache-Control"] = "max-age=0, must-revalidate"
+                response.headers[
+                    "Cache-Control"] = "max-age=0, must-revalidate"
                 return response
             else:
-                hacs.logger.error(f"Tried to serve up '{file}' but it does not exist")
+                hacs.logger.error(
+                    f"Tried to serve up '{file}' but it does not exist")
 
         except Exception as error:  # pylint: disable=broad-except
             hacs.logger.debug(
                 "there was an issue trying to serve {} - {}".format(
-                    requested_file, error
-                )
-            )
+                    requested_file, error))
 
         return web.Response(status=404)
 

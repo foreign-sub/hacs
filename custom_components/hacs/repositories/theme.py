@@ -61,12 +61,10 @@ class HacsTheme(HacsRepository):
             self.information.file_name = self.data.filename
         else:
             self.information.file_name = find_first_of_filetype(
-                self.content.files, "yaml"
-            ).split("/")[-1]
+                self.content.files, "yaml").split("/")[-1]
         self.information.name = self.information.file_name.replace(".yaml", "")
         self.content.path.local = (
-            f"{self.hacs.system.config_path}/themes/{self.information.name}"
-        )
+            f"{self.hacs.system.config_path}/themes/{self.information.name}")
 
     async def update_repository(self):  # lgtm[py/similar-function]
         """Update."""
@@ -84,9 +82,7 @@ class HacsTheme(HacsRepository):
             self.information.file_name = self.data.filename
         else:
             self.information.file_name = find_first_of_filetype(
-                self.content.files, "yaml"
-            ).split("/")[-1]
+                self.content.files, "yaml").split("/")[-1]
         self.information.name = self.information.file_name.replace(".yaml", "")
         self.content.path.local = (
-            f"{self.hacs.system.config_path}/themes/{self.information.name}"
-        )
+            f"{self.hacs.system.config_path}/themes/{self.information.name}")
