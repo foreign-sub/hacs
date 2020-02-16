@@ -1,8 +1,10 @@
 """Class for themes in HACS."""
 from integrationhelper import Logger
-from .repository import HacsRepository
+
 from ..hacsbase.exceptions import HacsException
-from ..helpers.filters import filter_content_return_one_of_type, find_first_of_filetype
+from ..helpers.filters import filter_content_return_one_of_type
+from ..helpers.filters import find_first_of_filetype
+from .repository import HacsRepository
 
 
 class HacsTheme(HacsRepository):
