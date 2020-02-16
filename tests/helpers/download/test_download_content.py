@@ -26,16 +26,18 @@ async def test_download_content(aresponses, tmp_path, event_loop):
     repository.content.path.remote = ""
     repository.content.path.local = tmp_path
     repository.tree = [
-        AIOGithubTreeContent(
-            {"path": "test/path/file.file", "type": "blob"}, "test/test", "master"
-        )
+        AIOGithubTreeContent({
+            "path": "test/path/file.file",
+            "type": "blob"
+        }, "test/test", "master")
     ]
     async with aiohttp.ClientSession(loop=event_loop) as session:
         hacs = get_hacs()
         hacs.hass.loop = event_loop
         hacs.session = session
         await download_content(repository)
-        assert os.path.exists(f"{repository.content.path.local}/test/path/file.file")
+        assert os.path.exists(
+            f"{repository.content.path.local}/test/path/file.file")
 
 
 @pytest.mark.asyncio
@@ -79,15 +81,18 @@ async def test_download_content_integration(aresponses, tmp_path, event_loop):
     for integration_file in integration_files:
         repository.tree.append(
             AIOGithubTreeContent(
-                {"path": f"custom_components/test/{integration_file}", "type": "blob"},
+                {
+                    "path": f"custom_components/test/{integration_file}",
+                    "type": "blob"
+                },
                 "test/test",
                 "master",
-            )
-        )
+            ))
 
     async with aiohttp.ClientSession(loop=event_loop) as session:
         hacs.hass.loop = event_loop
         hacs.session = session
         await download_content(repository)
         for path in repository.tree:
-            assert os.path.exists(f"{hacs.system.config_path}/{path.full_path}")
+            assert os.path.exists(
+                f"{hacs.system.config_path}/{path.full_path}")

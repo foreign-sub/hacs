@@ -39,9 +39,7 @@ async def async_download_file(url):
         else:
             raise HacsException(
                 "Got status code {} when trying to download {}".format(
-                    request.status, url
-                )
-            )
+                    request.status, url))
 
     return result
 
@@ -60,9 +58,10 @@ async def async_save_file(location, content):
         errors = None
 
     try:
-        async with aiofiles.open(
-            location, mode=mode, encoding=encoding, errors=errors
-        ) as outfile:
+        async with aiofiles.open(location,
+                                 mode=mode,
+                                 encoding=encoding,
+                                 errors=errors) as outfile:
             await outfile.write(content)
             outfile.close()
 

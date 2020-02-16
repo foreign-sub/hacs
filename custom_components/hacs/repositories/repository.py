@@ -144,8 +144,8 @@ class HacsRepository:
     def custom(self):
         """Return flag if the repository is custom."""
         if self.information.full_name.split("/")[0] in [
-            "custom-components",
-            "custom-cards",
+                "custom-components",
+                "custom-cards",
         ]:
             return False
         if self.information.full_name in self.hacs.common.default:
@@ -167,8 +167,7 @@ class HacsRepository:
         if target is not None:
             if self.releases.releases:
                 if not version_left_higher_then_right(
-                    self.hacs.system.ha_version, target
-                ):
+                        self.hacs.system.ha_version, target):
                     return False
         return True
 
@@ -267,7 +266,8 @@ class HacsRepository:
                 self.hacs.configuration.token,
                 self.information.full_name,
             )
-            self.data = self.data.create_from_dict(self.repository_object.attributes)
+            self.data = self.data.create_from_dict(
+                self.repository_object.attributes)
 
         # Set id
         self.information.uid = str(self.data.id)
@@ -287,9 +287,10 @@ class HacsRepository:
 
         # Attach repository
         self.repository_object = await get_repository(
-            self.hacs.session, self.hacs.configuration.token, self.information.full_name
-        )
-        self.data = self.data.create_from_dict(self.repository_object.attributes)
+            self.hacs.session, self.hacs.configuration.token,
+            self.information.full_name)
+        self.data = self.data.create_from_dict(
+            self.repository_object.attributes)
 
         # Set ref
         self.ref = version_to_install(self)
@@ -308,8 +309,7 @@ class HacsRepository:
 
         # Update last updaeted
         self.information.last_updated = self.repository_object.attributes.get(
-            "pushed_at", 0
-        )
+            "pushed_at", 0)
 
         # Update topics
         self.information.topics = self.data.topics
@@ -334,7 +334,8 @@ class HacsRepository:
             contents = False
 
             for release in self.releases.objects:
-                self.logger.info(f"ref: {self.ref}  ---  tag: {release.tag_name}")
+                self.logger.info(
+                    f"ref: {self.ref}  ---  tag: {release.tag_name}")
                 if release.tag_name == self.ref.split("/")[1]:
                     contents = release.assets
 
@@ -345,15 +346,16 @@ class HacsRepository:
                 filecontent = await async_download_file(content.download_url)
 
                 if filecontent is None:
-                    validate.errors.append(f"[{content.name}] was not downloaded.")
+                    validate.errors.append(
+                        f"[{content.name}] was not downloaded.")
                     continue
 
                 result = await async_save_file(
-                    f"{tempfile.gettempdir()}/{self.data.filename}", filecontent
-                )
+                    f"{tempfile.gettempdir()}/{self.data.filename}",
+                    filecontent)
                 with zipfile.ZipFile(
-                    f"{tempfile.gettempdir()}/{self.data.filename}", "r"
-                ) as zip_file:
+                        f"{tempfile.gettempdir()}/{self.data.filename}",
+                        "r") as zip_file:
                     zip_file.extractall(self.content.path.local)
 
                 if result:
@@ -365,7 +367,8 @@ class HacsRepository:
 
         return validate
 
-    async def download_content(self, validate, directory_path, local_directory, ref):
+    async def download_content(self, validate, directory_path, local_directory,
+                               ref):
         """Download the content of a directory."""
         from custom_components.hacs.helpers.download import download_content
 
@@ -379,10 +382,10 @@ class HacsRepository:
         if self.ref is None:
             self.ref = version_to_install(self)
         try:
-            manifest = await self.repository_object.get_contents("hacs.json", self.ref)
+            manifest = await self.repository_object.get_contents(
+                "hacs.json", self.ref)
             self.repository_manifest = HacsManifest.from_dict(
-                json.loads(manifest.content)
-            )
+                json.loads(manifest.content))
             self.data.update_data(json.loads(manifest.content))
         except (AIOGitHubException, Exception):  # Gotta Catch 'Em All
             pass
@@ -410,8 +413,7 @@ class HacsRepository:
         elif self.information.category == "theme":
             try:
                 await self.hacs.hass.services.async_call(
-                    "frontend", "reload_themes", {}
-                )
+                    "frontend", "reload_themes", {})
             except Exception:  # pylint: disable=broad-except
                 pass
         if self.information.full_name in self.hacs.common.installed:
@@ -434,13 +436,11 @@ class HacsRepository:
 
         try:
             if self.information.category == "python_script":
-                local_path = "{}/{}.py".format(
-                    self.content.path.local, self.information.name
-                )
+                local_path = "{}/{}.py".format(self.content.path.local,
+                                               self.information.name)
             elif self.information.category == "theme":
-                local_path = "{}/{}.yaml".format(
-                    self.content.path.local, self.information.name
-                )
+                local_path = "{}/{}.yaml".format(self.content.path.local,
+                                                 self.information.name)
             else:
                 local_path = self.content.path.local
 
