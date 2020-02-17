@@ -125,4 +125,3 @@ def test_translations(tmpdir):
 
 def test_requirements():
     assert check_requirements()
-
