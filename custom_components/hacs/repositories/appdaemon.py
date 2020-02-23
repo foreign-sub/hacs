@@ -42,8 +42,7 @@ class HacsAppdaemon(HacsRepository):
         self.content.path.remote = addir[0].path
         self.data.name = addir[0].name
         self.content.objects = await self.repository_object.get_contents(
-            self.content.path.remote, self.ref
-        )
+            self.content.path.remote, self.ref)
 
         self.content.files = []
         for filename in self.content.objects:
@@ -80,13 +79,11 @@ class HacsAppdaemon(HacsRepository):
 
         if self.content.path.remote == "apps":
             addir = await self.repository_object.get_contents(
-                self.content.path.remote, self.ref
-            )
+                self.content.path.remote, self.ref)
             self.content.path.remote = addir[0].path
             self.data.name = addir[0].name
         self.content.objects = await self.repository_object.get_contents(
-            self.content.path.remote, self.ref
-        )
+            self.content.path.remote, self.ref)
 
         self.content.files = []
         for filename in self.content.objects:

@@ -18,10 +18,11 @@ async def common_validate(repository):
     repository.logger.debug("Checking repository.")
     try:
         repository_object = await get_repository(
-            hacs.session, hacs.configuration.token, repository.information.full_name
-        )
+            hacs.session, hacs.configuration.token,
+            repository.information.full_name)
         repository.repository_object = repository_object
-        repository.data = repository.data.create_from_dict(repository_object.attributes)
+        repository.data = repository.data.create_from_dict(
+            repository_object.attributes)
     except (AIOGitHubException, HacsException) as exception:
         if not hacs.system.status.startup:
             repository.logger.error(exception)
@@ -61,11 +62,11 @@ async def common_validate(repository):
     repository.ref = version_to_install(repository)
 
     repository.logger.debug(
-        f"Running checks against {repository.ref.replace('tags/', '')}"
-    )
+        f"Running checks against {repository.ref.replace('tags/', '')}")
 
     try:
-        repository.tree = await get_tree(repository.repository_object, repository.ref)
+        repository.tree = await get_tree(repository.repository_object,
+                                         repository.ref)
         if not repository.tree:
             raise HacsException("No files in tree")
         repository.treefiles = []
