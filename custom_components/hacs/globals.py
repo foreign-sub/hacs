@@ -11,4 +11,3 @@ def get_hacs():
         hacs.append(Hacs())
 
     return hacs[0]
-

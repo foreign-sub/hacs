@@ -201,7 +201,8 @@ async def hacs_repository(hass, connection, msg):
             return
 
         repository = hacs.get_by_id(repo_id)
-        hacs.logger.debug(f"Running {action} for {repository.information.full_name}")
+        hacs.logger.debug(
+            f"Running {action} for {repository.information.full_name}")
 
         if action == "update":
             await repository.update_repository()
@@ -315,7 +316,8 @@ async def hacs_repository_data(hass, connection, msg):
         hass.bus.async_fire("hacs/repository", {})
         return
 
-    hacs.logger.debug(f"Running {action} for {repository.information.full_name}")
+    hacs.logger.debug(
+        f"Running {action} for {repository.information.full_name}")
 
     if action == "set_state":
         repository.state = data
@@ -365,7 +367,8 @@ async def get_critical_repositories(hass, connection, msg):
 
 @websocket_api.async_response
 @websocket_api.websocket_command(
-    {vol.Required("type"): "hacs/critical", vol.Optional("repository"): cv.string}
+    {vol.Required("type"): "hacs/critical",
+     vol.Optional("repository"): cv.string}
 )
 async def acknowledge_critical_repository(hass, connection, msg):
     """Handle get media player cover command."""

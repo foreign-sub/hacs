@@ -22,7 +22,8 @@ async def common_validate(repository):
             hacs.session, hacs.configuration.token, repository.information.full_name
         )
         repository.repository_object = repository_object
-        repository.data = repository.data.create_from_dict(repository_object.attributes)
+        repository.data = repository.data.create_from_dict(
+            repository_object.attributes)
     except (AIOGitHubException, HacsException) as exception:
         if not hacs.system.status.startup:
             repository.logger.error(exception)
