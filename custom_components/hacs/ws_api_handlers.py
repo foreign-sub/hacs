@@ -1,14 +1,16 @@
 """WebSocket API for HACS."""
 # pylint: disable=unused-argument
-import sys
 import os
+import sys
+
+import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 from aiogithubapi import AIOGitHubException
 from homeassistant.components import websocket_api
-import homeassistant.helpers.config_validation as cv
-from .hacsbase.exceptions import HacsException
-from .store import async_load_from_store, async_save_to_store
 
+from .hacsbase.exceptions import HacsException
+from .store import async_load_from_store
+from .store import async_save_to_store
 from custom_components.hacs.globals import get_hacs
 from custom_components.hacs.helpers.register_repository import register_repository
 

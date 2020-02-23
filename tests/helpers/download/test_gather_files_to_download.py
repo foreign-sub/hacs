@@ -3,15 +3,12 @@
 from aiogithubapi.content import AIOGithubTreeContent
 from aiogithubapi.release import AIOGithubRepositoryRelease
 
-from custom_components.hacs.helpers.information import find_file_name
 from custom_components.hacs.helpers.download import gather_files_to_download
-
-from tests.dummy_repository import (
-    dummy_repository_base,
-    dummy_repository_plugin,
-    dummy_repository_theme,
-    dummy_repository_appdaemon,
-)
+from custom_components.hacs.helpers.information import find_file_name
+from tests.dummy_repository import dummy_repository_appdaemon
+from tests.dummy_repository import dummy_repository_base
+from tests.dummy_repository import dummy_repository_plugin
+from tests.dummy_repository import dummy_repository_theme
 
 
 def test_gather_files_to_download():

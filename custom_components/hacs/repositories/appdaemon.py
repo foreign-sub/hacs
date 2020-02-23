@@ -2,8 +2,8 @@
 from aiogithubapi import AIOGitHubException
 from integrationhelper import Logger
 
-from .repository import HacsRepository
 from ..hacsbase.exceptions import HacsException
+from .repository import HacsRepository
 
 
 class HacsAppdaemon(HacsRepository):

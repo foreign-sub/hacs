@@ -1,7 +1,6 @@
 """Class for integrations in HACS."""
-from integrationhelper import Logger
-
 from homeassistant.loader import async_get_custom_components
+from integrationhelper import Logger
 
 from custom_components.hacs.hacsbase.exceptions import HacsException
 from custom_components.hacs.helpers.filters import get_first_directory_in_directory
