@@ -89,8 +89,7 @@ def gather_files_to_download(repository):
             continue
         if path.full_path.startswith(repository.content.path.remote):
             files.append(
-                FileInformation(path.download_url,
-                                path.full_path, path.filename)
+                FileInformation(path.download_url, path.full_path, path.filename)
             )
     return files
 
@@ -149,8 +148,7 @@ async def download_content(repository):
         filecontent = await async_download_file(content.download_url)
 
         if filecontent is None:
-            repository.validate.errors.append(
-                f"[{content.name}] was not downloaded.")
+            repository.validate.errors.append(f"[{content.name}] was not downloaded.")
             continue
 
         # Save the content of the file.
@@ -172,12 +170,10 @@ async def download_content(repository):
         # Check local directory
         pathlib.Path(local_directory).mkdir(parents=True, exist_ok=True)
 
-        local_file_path = (
-            f"{local_directory}/{content.name}").replace("//", "/")
+        local_file_path = (f"{local_directory}/{content.name}").replace("//", "/")
 
         result = await async_save_file(local_file_path, filecontent)
         if result:
             repository.logger.info(f"download of {content.name} complete")
             continue
-        repository.validate.errors.append(
-            f"[{content.name}] was not downloaded.")
+        repository.validate.errors.append(f"[{content.name}] was not downloaded.")

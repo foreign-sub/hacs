@@ -33,8 +33,7 @@ def test_gather_plugin_files_from_root():
         AIOGithubTreeContent(
             {"path": "test.js", "type": "blob"}, "test/test", "master"
         ),
-        AIOGithubTreeContent(
-            {"path": "dir", "type": "tree"}, "test/test", "master"),
+        AIOGithubTreeContent({"path": "dir", "type": "tree"}, "test/test", "master"),
         AIOGithubTreeContent(
             {"path": "aaaa.js", "type": "blob"}, "test/test", "master"
         ),
@@ -97,8 +96,7 @@ def test_gather_plugin_files_from_release_multiple():
     repository.releases.releases = True
     repository.releases.objects = [
         AIOGithubRepositoryRelease(
-            {"tag_name": "3", "assets": [
-                {"name": "test.js"}, {"name": "test.png"}]}
+            {"tag_name": "3", "assets": [{"name": "test.js"}, {"name": "test.png"}]}
         )
     ]
     files = [x.name for x in gather_files_to_download(repository)]
@@ -112,8 +110,7 @@ def test_gather_zip_release():
     repository.data.zip_release = True
     repository.data.filename = "test.zip"
     repository.releases.objects = [
-        AIOGithubRepositoryRelease(
-            {"tag_name": "3", "assets": [{"name": "test.zip"}]})
+        AIOGithubRepositoryRelease({"tag_name": "3", "assets": [{"name": "test.zip"}]})
     ]
     files = [x.name for x in gather_files_to_download(repository)]
     assert "test.zip" in files
@@ -127,8 +124,7 @@ def test_single_file_repo():
         AIOGithubTreeContent(
             {"path": "test.file", "type": "blob"}, "test/test", "master"
         ),
-        AIOGithubTreeContent(
-            {"path": "dir", "type": "tree"}, "test/test", "master"),
+        AIOGithubTreeContent({"path": "dir", "type": "tree"}, "test/test", "master"),
         AIOGithubTreeContent(
             {"path": "test.yaml", "type": "blob"}, "test/test", "master"
         ),
@@ -151,8 +147,7 @@ def test_gather_content_in_root_theme():
         AIOGithubTreeContent(
             {"path": "test.yaml", "type": "blob"}, "test/test", "master"
         ),
-        AIOGithubTreeContent(
-            {"path": "dir", "type": "tree"}, "test/test", "master"),
+        AIOGithubTreeContent({"path": "dir", "type": "tree"}, "test/test", "master"),
         AIOGithubTreeContent(
             {"path": "test2.yaml", "type": "blob"}, "test/test", "master"
         ),
@@ -195,8 +190,7 @@ def test_gather_appdaemon_files_with_subdir():
             {"path": "apps/test/core/test.py", "type": "blob"}, "test/test", "master"
         ),
         AIOGithubTreeContent(
-            {"path": "apps/test/devices/test.py",
-                "type": "blob"}, "test/test", "master"
+            {"path": "apps/test/devices/test.py", "type": "blob"}, "test/test", "master"
         ),
         AIOGithubTreeContent(
             {"path": "apps/test/test/test.py", "type": "blob"}, "test/test", "master"

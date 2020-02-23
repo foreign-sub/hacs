@@ -27,8 +27,7 @@ async def get_info_md_content(repository):
         info = await repository.repository_object.get_contents(filename, repository.ref)
         if info is None:
             return ""
-        info = info.content.replace(
-            "<svg", "<disabled").replace("</svg", "</disabled")
+        info = info.content.replace("<svg", "<disabled").replace("</svg", "</disabled")
         return render_template(info, repository)
     except (AIOGitHubException, Exception):  # pylint: disable=broad-except
         return ""
@@ -80,15 +79,13 @@ async def get_integration_manifest(repository):
         repository.information.authors = manifest["codeowners"]
         repository.domain = manifest["domain"]
         repository.data.name = manifest["name"]
-        repository.information.homeassistant_version = manifest.get(
-            "homeassistant")
+        repository.information.homeassistant_version = manifest.get("homeassistant")
 
         # Set local path
         repository.content.path.local = repository.localpath
 
     except KeyError as exception:
-        raise HacsException(
-            f"Missing expected key {exception} in 'manifest.json'")
+        raise HacsException(f"Missing expected key {exception} in 'manifest.json'")
 
 
 def find_file_name(repository):

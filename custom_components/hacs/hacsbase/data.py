@@ -82,10 +82,8 @@ class HacsData:
 
             # Hacs
             self.hacs.configuration.frontend_mode = hacs.get("view", "Grid")
-            self.hacs.configuration.frontend_compact = hacs.get(
-                "compact", False)
-            self.hacs.configuration.onboarding_done = hacs.get(
-                "onboarding_done", False)
+            self.hacs.configuration.frontend_compact = hacs.get("compact", False)
+            self.hacs.configuration.onboarding_done = hacs.get("onboarding_done", False)
 
             # Repositories
             for entry in repositories:
@@ -122,8 +120,7 @@ def restore_repository_data(
     repository.information.authors = repository_data.get("authors", [])
     repository.information.description = repository_data.get("description")
     repository.data.name = repository_data.get("name")
-    repository.releases.last_release_object_downloads = repository_data.get(
-        "downloads")
+    repository.releases.last_release_object_downloads = repository_data.get("downloads")
     repository.information.last_updated = repository_data.get("last_updated")
     repository.information.topics = repository_data.get("topics", [])
     repository.information.stars = repository_data.get("stars", 0)
@@ -136,8 +133,7 @@ def restore_repository_data(
     repository.versions.available = repository_data.get("last_release_tag")
     repository.versions.available_commit = repository_data.get("last_commit")
     repository.versions.installed = repository_data.get("version_installed")
-    repository.versions.installed_commit = repository_data.get(
-        "installed_commit")
+    repository.versions.installed_commit = repository_data.get("installed_commit")
 
     repository.repository_manifest = HacsManifest.from_dict(
         repository_data.get("repository_manifest", {})
