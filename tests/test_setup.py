@@ -29,9 +29,8 @@ async def _load_hacs_repository(aresponses, event_loop):
         "api.github.com",
         "/repos/hacs/integration",
         "get",
-        aresponses.Response(
-            body=json.dumps(repository_data), headers=response_rate_limit_header
-        ),
+        aresponses.Response(body=json.dumps(repository_data),
+                            headers=response_rate_limit_header),
     )
     aresponses.add(
         "api.github.com",
@@ -58,9 +57,8 @@ async def _load_hacs_repository(aresponses, event_loop):
         "api.github.com",
         "/repos/test/test/releases",
         "get",
-        aresponses.Response(
-            body=json.dumps(release_data), headers=response_rate_limit_header
-        ),
+        aresponses.Response(body=json.dumps(release_data),
+                            headers=response_rate_limit_header),
     )
     aresponses.add(
         "api.github.com",
@@ -72,9 +70,8 @@ async def _load_hacs_repository(aresponses, event_loop):
         "api.github.com",
         "/repos/test/test/contents/hacs.json",
         "get",
-        aresponses.Response(
-            body=json.dumps({"name": "test"}), headers=response_rate_limit_header
-        ),
+        aresponses.Response(body=json.dumps({"name": "test"}),
+                            headers=response_rate_limit_header),
     )
     aresponses.add(
         "api.github.com",
