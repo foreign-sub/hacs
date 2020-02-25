@@ -38,9 +38,8 @@ class HacsData:
             },
         )
 
-        await async_save_to_store(
-            self.hacs.hass, "removed", [x.__dict__ for x in removed_repositories]
-        )
+        await async_save_to_store(self.hacs.hass, "removed",
+                                  [x.__dict__ for x in removed_repositories])
 
         # Repositories
         content = {}
@@ -79,7 +78,8 @@ class HacsData:
     async def restore(self):
         """Restore saved data."""
         hacs = await async_load_from_store(self.hacs.hass, "hacs")
-        repositories = await async_load_from_store(self.hacs.hass, "repositories")
+        repositories = await async_load_from_store(self.hacs.hass,
+                                                   "repositories")
         removed = await async_load_from_store(self.hacs.hass, "removed")
         try:
             if not hacs and not repositories:
@@ -90,8 +90,10 @@ class HacsData:
 
             # Hacs
             self.hacs.configuration.frontend_mode = hacs.get("view", "Grid")
-            self.hacs.configuration.frontend_compact = hacs.get("compact", False)
-            self.hacs.configuration.onboarding_done = hacs.get("onboarding_done", False)
+            self.hacs.configuration.frontend_compact = hacs.get(
+                "compact", False)
+            self.hacs.configuration.onboarding_done = hacs.get(
+                "onboarding_done", False)
 
             for entry in removed:
                 removed_repo = get_removed(entry["repository"])
@@ -101,9 +103,8 @@ class HacsData:
             for entry in repositories:
                 repo = repositories[entry]
                 if not self.hacs.is_known(repo["full_name"]):
-                    await register_repository(
-                        repo["full_name"], repo["category"], False
-                    )
+                    await register_repository(repo["full_name"],
+                                              repo["category"], False)
                 repository = self.hacs.get_by_name(repo["full_name"])
                 if repository is None:
                     self.logger.error(f"Did not find {repo['full_name']}")
@@ -112,8 +113,7 @@ class HacsData:
                 # Restore repository attributes
                 repository.information.uid = entry
                 await self.hacs.hass.async_add_executor_job(
-                    restore_repository_data, repository, repo
-                )
+                    restore_repository_data, repository, repo)
 
             self.logger.info("Restore done")
         except Exception as exception:  # pylint: disable=broad-except
@@ -122,13 +122,13 @@ class HacsData:
         return True
 
 
-def restore_repository_data(
-    repository: type(HacsRepository), repository_data: dict
-) -> None:
+def restore_repository_data(repository: type(HacsRepository),
+                            repository_data: dict) -> None:
     """Restore Repository Data"""
     repository.data.authors = repository_data.get("authors", [])
     repository.data.description = repository_data.get("description")
-    repository.releases.last_release_object_downloads = repository_data.get("downloads")
+    repository.releases.last_release_object_downloads = repository_data.get(
+        "downloads")
     repository.information.last_updated = repository_data.get("last_updated")
     repository.data.topics = repository_data.get("topics", [])
     repository.data.stargazers_count = repository_data.get("stars", 0)
@@ -141,11 +141,11 @@ def restore_repository_data(
     repository.versions.available = repository_data.get("last_release_tag")
     repository.versions.available_commit = repository_data.get("last_commit")
     repository.versions.installed = repository_data.get("version_installed")
-    repository.versions.installed_commit = repository_data.get("installed_commit")
+    repository.versions.installed_commit = repository_data.get(
+        "installed_commit")
 
     repository.repository_manifest = HacsManifest.from_dict(
-        repository_data.get("repository_manifest", {})
-    )
+        repository_data.get("repository_manifest", {}))
 
     if repository.status.installed:
         repository.status.first_install = False
