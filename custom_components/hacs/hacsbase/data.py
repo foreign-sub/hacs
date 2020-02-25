@@ -36,8 +36,7 @@ class HacsData:
         )
 
         await async_save_to_store(
-            self.hacs.hass, "removed", [
-                x.__dict__ for x in removed_repositories]
+            self.hacs.hass, "removed", [x.__dict__ for x in removed_repositories]
         )
 
         # Repositories
@@ -88,10 +87,8 @@ class HacsData:
 
             # Hacs
             self.hacs.configuration.frontend_mode = hacs.get("view", "Grid")
-            self.hacs.configuration.frontend_compact = hacs.get(
-                "compact", False)
-            self.hacs.configuration.onboarding_done = hacs.get(
-                "onboarding_done", False)
+            self.hacs.configuration.frontend_compact = hacs.get("compact", False)
+            self.hacs.configuration.onboarding_done = hacs.get("onboarding_done", False)
 
             for entry in removed:
                 removed_repo = get_removed(entry["repository"])
@@ -128,8 +125,7 @@ def restore_repository_data(
     """Restore Repository Data"""
     repository.data.authors = repository_data.get("authors", [])
     repository.data.description = repository_data.get("description")
-    repository.releases.last_release_object_downloads = repository_data.get(
-        "downloads")
+    repository.releases.last_release_object_downloads = repository_data.get("downloads")
     repository.information.last_updated = repository_data.get("last_updated")
     repository.data.topics = repository_data.get("topics", [])
     repository.data.stargazers_count = repository_data.get("stars", 0)
@@ -142,8 +138,7 @@ def restore_repository_data(
     repository.versions.available = repository_data.get("last_release_tag")
     repository.versions.available_commit = repository_data.get("last_commit")
     repository.versions.installed = repository_data.get("version_installed")
-    repository.versions.installed_commit = repository_data.get(
-        "installed_commit")
+    repository.versions.installed_commit = repository_data.get("installed_commit")
 
     repository.repository_manifest = HacsManifest.from_dict(
         repository_data.get("repository_manifest", {})
