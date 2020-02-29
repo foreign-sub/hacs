@@ -67,20 +67,17 @@ async def get_file_response(requested_file):
             file += ".gz"
 
         if os.path.exists(file):
-            hacs.logger.debug(
-                "Serving {} from {}".format(requested_file, file))
+            hacs.logger.debug("Serving {} from {}".format(requested_file, file))
             response = web.FileResponse(file)
             response.headers["Cache-Control"] = "no-store, max-age=0"
             response.headers["Pragma"] = "no-store"
             return response
         else:
-            hacs.logger.error(
-                f"Tried to serve up '{file}' but it does not exist")
+            hacs.logger.error(f"Tried to serve up '{file}' but it does not exist")
 
     except Exception as error:  # pylint: disable=broad-except
         hacs.logger.debug(
-            "there was an issue trying to serve {} - {}".format(
-                requested_file, error)
+            "there was an issue trying to serve {} - {}".format(requested_file, error)
         )
 
     return web.Response(status=404)
