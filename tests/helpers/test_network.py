@@ -1,6 +1,5 @@
 """Test network."""
 # pylint: disable=missing-docstring,invalid-name
-
 from custom_components.hacs.helpers.network import internet_connectivity_check
 
 
