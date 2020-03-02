@@ -45,17 +45,14 @@ async def async_setup(hass, config):
     hass.data[DOMAIN] = config
     hacs.hass = hass
     hacs.session = async_create_clientsession(hass)
-    hacs.configuration = Configuration.from_dict(
-        config[DOMAIN], config[DOMAIN].get("options")
-    )
+    hacs.configuration = Configuration.from_dict(config[DOMAIN],
+                                                 config[DOMAIN].get("options"))
     hacs.configuration.config = config
     hacs.configuration.config_type = "yaml"
     await startup_wrapper_for_yaml()
     hass.async_create_task(
         hass.config_entries.flow.async_init(
-            DOMAIN, context={"source": config_entries.SOURCE_IMPORT}, data={}
-        )
-    )
+            DOMAIN, context={"source": config_entries.SOURCE_IMPORT}, data={}))
     return True
 
 
@@ -66,14 +63,12 @@ async def async_setup_entry(hass, config_entry):
     if config_entry.source == config_entries.SOURCE_IMPORT:
         if conf is None:
             hass.async_create_task(
-                hass.config_entries.async_remove(config_entry.entry_id)
-            )
+                hass.config_entries.async_remove(config_entry.entry_id))
         return False
     hacs.hass = hass
     hacs.session = async_create_clientsession(hass)
-    hacs.configuration = Configuration.from_dict(
-        config_entry.data, config_entry.options
-    )
+    hacs.configuration = Configuration.from_dict(config_entry.data,
+                                                 config_entry.options)
     hacs.configuration.config_type = "flow"
     hacs.configuration.config_entry = config_entry
     config_entry.add_update_listener(reload_hacs)
@@ -92,10 +87,9 @@ async def startup_wrapper_for_yaml():
     if not startup_result:
         hacs.system.disabled = True
         hacs.hass.components.frontend.async_remove_panel(
-            hacs.configuration.sidepanel_title.lower()
-            .replace(" ", "_")
-            .replace("-", "_")
-        )
+            hacs.configuration.sidepanel_title.lower().replace(" ",
+                                                               "_").replace(
+                                                                   "-", "_"))
         hacs.logger.info("Could not setup HACS, trying again in 15 min")
         async_call_later(hacs.hass, 900, startup_wrapper_for_yaml())
         return
@@ -109,13 +103,11 @@ async def hacs_startup():
         return False
     if hacs.configuration.debug:
         try:
-            await hacs.hass.services.async_call(
-                "logger", "set_level", {"hacs": "debug"}
-            )
+            await hacs.hass.services.async_call("logger", "set_level",
+                                                {"hacs": "debug"})
         except ServiceNotFound:
             hacs.logger.error(
-                "Could not set logging level to debug, logger is not enabled"
-            )
+                "Could not set logging level to debug, logger is not enabled")
 
     lovelace_info = await system_health_info(hacs.hass)
     hacs.logger.debug(f"Configuration type: {hacs.configuration.config_type}")
@@ -126,16 +118,16 @@ async def hacs_startup():
 
     hacs.system.lovelace_mode = lovelace_info.get("mode", "yaml")
     hacs.system.disabled = False
-    hacs.github = AIOGitHub(
-        hacs.configuration.token, async_create_clientsession(hacs.hass)
-    )
+    hacs.github = AIOGitHub(hacs.configuration.token,
+                            async_create_clientsession(hacs.hass))
     hacs.data = HacsData()
 
     # Check HACS Constrains
     if not await hacs.hass.async_add_executor_job(check_constans):
         if hacs.configuration.config_type == "flow":
             if hacs.configuration.config_entry is not None:
-                await async_remove_entry(hacs.hass, hacs.configuration.config_entry)
+                await async_remove_entry(hacs.hass,
+                                         hacs.configuration.config_entry)
         return False
 
     # Set up frontend
@@ -149,7 +141,8 @@ async def hacs_startup():
     if not await load_hacs_repository():
         if hacs.configuration.config_type == "flow":
             if hacs.configuration.config_entry is not None:
-                await async_remove_entry(hacs.hass, hacs.configuration.config_entry)
+                await async_remove_entry(hacs.hass,
+                                         hacs.configuration.config_entry)
         return False
 
     # Restore from storefiles
@@ -158,7 +151,8 @@ async def hacs_startup():
         hacs_repo.pending_restart = True
         if hacs.configuration.config_type == "flow":
             if hacs.configuration.config_entry is not None:
-                await async_remove_entry(hacs.hass, hacs.configuration.config_entry)
+                await async_remove_entry(hacs.hass,
+                                         hacs.configuration.config_entry)
         return False
 
     # Add aditional categories
@@ -180,7 +174,8 @@ async def hacs_startup():
 
     # Setup startup tasks
     if hacs.configuration.config_type == "yaml":
-        hacs.hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START, hacs.startup_tasks())
+        hacs.hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START,
+                                        hacs.startup_tasks())
     else:
         async_call_later(hacs.hass, 5, hacs.startup_tasks())
 
@@ -203,7 +198,8 @@ async def async_remove_entry(hass, config_entry):
         task()
     hacs.logger.info("Removing sensor")
     try:
-        await hass.config_entries.async_forward_entry_unload(config_entry, "sensor")
+        await hass.config_entries.async_forward_entry_unload(
+            config_entry, "sensor")
     except ValueError:
         pass
     hacs.logger.info("Removing sidepanel")
