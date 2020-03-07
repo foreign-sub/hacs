@@ -59,8 +59,7 @@ async def install_repository(repository):
     if repository.validate.success:
         if repository.data.full_name not in repository.hacs.common.installed:
             if repository.data.full_name == "hacs/integration":
-                repository.hacs.common.installed.append(
-                    repository.data.full_name)
+                repository.hacs.common.installed.append(repository.data.full_name)
         repository.status.installed = True
         repository.versions.installed_commit = repository.versions.available_commit
 
