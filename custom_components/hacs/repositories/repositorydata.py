@@ -55,8 +55,8 @@ class RepositoryData:
             if key in data.__dict__:
                 if key == "pushed_at":
                     setattr(
-                        data, key, datetime.strptime(source[key], "%Y-%m-%dT%H:%M:%SZ")
-                    )
+                        data, key,
+                        datetime.strptime(source[key], "%Y-%m-%dT%H:%M:%SZ"))
                 elif key == "county":
                     if isinstance(source[key], str):
                         setattr(data, key, [source[key]])
@@ -71,9 +71,8 @@ class RepositoryData:
         for key in data:
             if key in self.__dict__:
                 if key == "pushed_at":
-                    setattr(
-                        self, key, datetime.strptime(data[key], "%Y-%m-%dT%H:%M:%SZ")
-                    )
+                    setattr(self, key,
+                            datetime.strptime(data[key], "%Y-%m-%dT%H:%M:%SZ"))
                 elif key == "county":
                     if isinstance(data[key], str):
                         setattr(self, key, [data[key]])

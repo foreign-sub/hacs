@@ -53,7 +53,8 @@ class Configuration:
     @staticmethod
     def from_dict(configuration: dict, options: dict):
         """Set attributes from dicts."""
-        if isinstance(options, bool) or isinstance(configuration.get("options"), bool):
+        if isinstance(options, bool) or isinstance(
+                configuration.get("options"), bool):
             raise HacsException("Configuration is not valid.")
 
         if options is None:

@@ -60,8 +60,7 @@ class Backup:
                     sleep(0.1)
             shutil.copytree(self.backup_path_full, self.local_path)
         self.logger.debug(
-            f"Restored {self.local_path}, from backup {self.backup_path_full}"
-        )
+            f"Restored {self.local_path}, from backup {self.backup_path_full}")
 
     def cleanup(self):
         """Cleanup backup files."""
@@ -79,9 +78,9 @@ class BackupNetDaemon:
         """Initialize."""
         self.repository = repository
         self.logger = Logger("hacs.backup")
-        self.backup_path = (
-            tempfile.gettempdir() + "/hacs_persistent_netdaemon/" + repository.data.name
-        )
+        self.backup_path = (tempfile.gettempdir() +
+                            "/hacs_persistent_netdaemon/" +
+                            repository.data.name)
 
     def create(self):
         """Create a backup in /tmp"""
@@ -104,8 +103,7 @@ class BackupNetDaemon:
                 if filename.endswith(".yaml"):
                     source_file_name = f"{self.backup_path}/{filename}"
                     target_file_name = (
-                        f"{self.repository.content.path.local}/{filename}"
-                    )
+                        f"{self.repository.content.path.local}/{filename}")
                     shutil.copyfile(source_file_name, target_file_name)
 
     def cleanup(self):
