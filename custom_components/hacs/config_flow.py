@@ -101,4 +101,5 @@ class HacsOptionsFlowHandler(config_entries.OptionsFlow):
         else:
             schema = hacs_config_option_schema(self.config_entry.options)
 
-        return self.async_show_form(step_id="user", data_schema=vol.Schema(schema))
+        return self.async_show_form(step_id="user",
+                                    data_schema=vol.Schema(schema))

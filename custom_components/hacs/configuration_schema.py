@@ -20,7 +20,8 @@ RELEASE_LIMIT = "release_limit"
 EXPERIMENTAL = "experimental"
 
 
-def hacs_base_config_schema(config: dict = {}, config_flow: bool = False) -> dict:
+def hacs_base_config_schema(config: dict = {},
+                            config_flow: bool = False) -> dict:
     """Return a shcema configuration dict for HACS."""
     if not config:
         config = {
@@ -35,14 +36,17 @@ def hacs_base_config_schema(config: dict = {}, config_flow: bool = False) -> dic
     if config_flow:
         return {
             vol.Required(TOKEN, default=config.get(TOKEN)): str,
-            vol.Optional(SIDEPANEL_TITLE, default=config.get(SIDEPANEL_TITLE)): str,
-            vol.Optional(SIDEPANEL_ICON, default=config.get(SIDEPANEL_ICON)): str,
+            vol.Optional(SIDEPANEL_TITLE, default=config.get(SIDEPANEL_TITLE)):
+            str,
+            vol.Optional(SIDEPANEL_ICON, default=config.get(SIDEPANEL_ICON)):
+            str,
             vol.Optional(APPDAEMON, default=config.get(APPDAEMON)): bool,
             vol.Optional(NETDAEMON, default=config.get(NETDAEMON)): bool,
         }
     return {
         vol.Required(TOKEN, default=config.get(TOKEN)): str,
-        vol.Optional(SIDEPANEL_TITLE, default=config.get(SIDEPANEL_TITLE)): str,
+        vol.Optional(SIDEPANEL_TITLE, default=config.get(SIDEPANEL_TITLE)):
+        str,
         vol.Optional(SIDEPANEL_ICON, default=config.get(SIDEPANEL_ICON)): str,
         vol.Optional(APPDAEMON, default=config.get(APPDAEMON)): bool,
         vol.Optional(NETDAEMON, default=config.get(NETDAEMON)): bool,
@@ -54,7 +58,12 @@ def hacs_base_config_schema(config: dict = {}, config_flow: bool = False) -> dic
 def hacs_config_option_schema(options: dict = {}) -> dict:
     """Return a shcema for HACS configuration options."""
     if not options:
-        options = {COUNTRY: "ALL", DEBUG: False, RELEASE_LIMIT: 5, EXPERIMENTAL: False}
+        options = {
+            COUNTRY: "ALL",
+            DEBUG: False,
+            RELEASE_LIMIT: 5,
+            EXPERIMENTAL: False
+        }
     return {
         vol.Optional(COUNTRY, default=options.get(COUNTRY)): vol.In(LOCALE),
         vol.Optional(RELEASE_LIMIT, default=options.get(RELEASE_LIMIT)): int,
