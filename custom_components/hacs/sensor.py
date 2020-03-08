@@ -8,7 +8,10 @@ from .const import VERSION
 from .hacsbase import Hacs as hacs
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_platform(hass,
+                               config,
+                               async_add_entities,
+                               discovery_info=None):
     """Setup sensor platform."""
     async_add_entities([HACSSensor()])
 
@@ -49,10 +52,8 @@ class HACSSensor(HACSDevice):
         self.repositories = []
 
         for repository in hacs.repositories:
-            if (
-                repository.pending_upgrade
-                and repository.data.category in hacs.common.categories
-            ):
+            if (repository.pending_upgrade
+                    and repository.data.category in hacs.common.categories):
                 self.repositories.append(repository)
         self._state = len(self.repositories)
 
@@ -88,12 +89,14 @@ class HACSSensor(HACSDevice):
         """Return attributes for the sensor."""
         data = []
         for repository in self.repositories:
-            data.append(
-                {
-                    "name": repository.data.full_name,
-                    "display_name": repository.display_name,
-                    "installed version": repository.display_installed_version,
-                    "available version": repository.display_available_version,
-                }
-            )
+            data.append({
+                "name":
+                repository.data.full_name,
+                "display_name":
+                repository.display_name,
+                "installed version":
+                repository.display_installed_version,
+                "available version":
+                repository.display_available_version,
+            })
         return {"repositories": data}
