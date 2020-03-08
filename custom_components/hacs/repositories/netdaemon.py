@@ -1,9 +1,8 @@
 """Class for netdaemon apps in HACS."""
 from integrationhelper import Logger
 
-from .repository import HacsRepository
 from ..hacsbase.exceptions import HacsException
-
+from .repository import HacsRepository
 from custom_components.hacs.helpers.filters import get_first_directory_in_directory
 
 

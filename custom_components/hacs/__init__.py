@@ -4,34 +4,32 @@ Custom element manager for community created elements.
 For more details about this integration, please refer to the documentation at
 https://hacs.xyz/
 """
-
 import voluptuous as vol
 from aiogithubapi import AIOGitHub
 from homeassistant import config_entries
-from homeassistant.const import EVENT_HOMEASSISTANT_START
-from homeassistant.const import __version__ as HAVERSION
 from homeassistant.components.lovelace import system_health_info
-from homeassistant.exceptions import ConfigEntryNotReady, ServiceNotFound
+from homeassistant.const import __version__ as HAVERSION
+from homeassistant.const import EVENT_HOMEASSISTANT_START
+from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ServiceNotFound
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.event import async_call_later
 
-from custom_components.hacs.configuration_schema import (
-    hacs_base_config_schema,
-    hacs_config_option_schema,
-)
-from custom_components.hacs.const import DOMAIN, ELEMENT_TYPES, STARTUP, VERSION
-from custom_components.hacs.constrains import check_constans, check_requirements
+from custom_components.hacs.configuration_schema import hacs_base_config_schema
+from custom_components.hacs.configuration_schema import hacs_config_option_schema
+from custom_components.hacs.const import DOMAIN
+from custom_components.hacs.const import ELEMENT_TYPES
+from custom_components.hacs.const import STARTUP
+from custom_components.hacs.const import VERSION
+from custom_components.hacs.constrains import check_constans
+from custom_components.hacs.constrains import check_requirements
+from custom_components.hacs.globals import get_hacs
 from custom_components.hacs.hacsbase.configuration import Configuration
 from custom_components.hacs.hacsbase.data import HacsData
-from custom_components.hacs.setup import (
-    add_sensor,
-    load_hacs_repository,
-    setup_frontend,
-)
-
-from custom_components.hacs.globals import get_hacs
-
 from custom_components.hacs.helpers.network import internet_connectivity_check
+from custom_components.hacs.setup import add_sensor
+from custom_components.hacs.setup import load_hacs_repository
+from custom_components.hacs.setup import setup_frontend
 
 SCHEMA = hacs_base_config_schema()
 SCHEMA[vol.Optional("options")] = hacs_config_option_schema()

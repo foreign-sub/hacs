@@ -1,6 +1,7 @@
 """HACS Configuration."""
 import attr
 from integrationhelper import Logger
+
 from custom_components.hacs.hacsbase.exceptions import HacsException
 
 

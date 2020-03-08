@@ -1,6 +1,7 @@
 """Configuration Test Suite."""
 # pylint: disable=missing-docstring
 import pytest
+
 from custom_components.hacs.hacsbase.configuration import Configuration
 from custom_components.hacs.hacsbase.exceptions import HacsException
 
