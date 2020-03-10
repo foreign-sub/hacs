@@ -11,7 +11,9 @@ from custom_components.hacs.handler.template import render_template
 def info_file(repository):
     """get info filename."""
     if repository.data.render_readme:
-        for filename in ["readme", "readme.md", "README", "README.md", "README.MD"]:
+        for filename in [
+                "readme", "readme.md", "README", "README.md", "README.MD"
+        ]:
             if filename in repository.treefiles:
                 return filename
         return ""
@@ -27,10 +29,12 @@ async def get_info_md_content(repository):
     if not filename:
         return ""
     try:
-        info = await repository.repository_object.get_contents(filename, repository.ref)
+        info = await repository.repository_object.get_contents(
+            filename, repository.ref)
         if info is None:
             return ""
-        info = info.content.replace("<svg", "<disabled").replace("</svg", "</disabled")
+        info = info.content.replace("<svg", "<disabled").replace(
+            "</svg", "</disabled")
         return render_template(info, repository)
     except (AIOGitHubException, Exception):  # pylint: disable=broad-except
         return ""
@@ -74,8 +78,7 @@ async def get_integration_manifest(repository):
         raise HacsException(f"No file found '{manifest_path}'")
     try:
         manifest = await repository.repository_object.get_contents(
-            manifest_path, repository.ref
-        )
+            manifest_path, repository.ref)
         manifest = json.loads(manifest.content)
     except Exception as exception:  # pylint: disable=broad-except
         raise HacsException(f"Could not read manifest.json [{exception}]")
@@ -91,7 +94,8 @@ async def get_integration_manifest(repository):
         repository.content.path.local = repository.localpath
 
     except KeyError as exception:
-        raise HacsException(f"Missing expected key {exception} in 'manifest.json'")
+        raise HacsException(
+            f"Missing expected key {exception} in 'manifest.json'")
 
 
 def find_file_name(repository):
@@ -146,7 +150,7 @@ def get_file_name_plugin(repository):
         else:
             for filename in valid_filenames:
                 if f"{location+'/' if location else ''}{filename}" in [
-                    x.full_path for x in tree
+                        x.full_path for x in tree
                 ]:
                     repository.data.file_name = filename.split("/")[-1]
                     repository.content.path.remote = location
@@ -165,7 +169,7 @@ def get_file_name_theme(repository):
 
     for treefile in tree:
         if treefile.full_path.startswith(
-            repository.content.path.remote
+                repository.content.path.remote
         ) and treefile.full_path.endswith(".yaml"):
             repository.data.file_name = treefile.filename
 
@@ -182,6 +186,6 @@ def get_file_name_python_script(repository):
 
     for treefile in tree:
         if treefile.full_path.startswith(
-            repository.content.path.remote
+                repository.content.path.remote
         ) and treefile.full_path.endswith(".py"):
             repository.data.file_name = treefile.filename
