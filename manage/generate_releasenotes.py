@@ -100,9 +100,8 @@ def get_frontend_commits(github, skip=True):
     repo = github.get_repo("hacs/frontend")
     integration = github.get_repo("hacs/integration")
     last_tag = last_integration_release(github, skip)["tag_name"]
-    contents = integration.get_contents(
-        "custom_components/hacs/manifest.json", ref=f"refs/tags/{last_tag}"
-    )
+    contents = integration.get_contents("custom_components/hacs/manifest.json",
+                                        ref=f"refs/tags/{last_tag}")
     for req in json.loads(contents.decoded_content)["requirements"]:
         if "hacs_frontend" in req:
             hacs_frontend = req.split("==")[1]
@@ -119,9 +118,9 @@ def get_frontend_commits(github, skip=True):
                 continue
             if "\n" in msg:
                 msg = msg.split("\n")[0]
-            changes += CHANGE.format(
-                line=msg, link=commit.html_url, author=commit.author.login
-            )
+            changes += CHANGE.format(line=msg,
+                                     link=commit.html_url,
+                                     author=commit.author.login)
 
     return changes
 
@@ -129,7 +128,8 @@ def get_frontend_commits(github, skip=True):
 def get_integration_commits(github, skip=True):
     changes = ""
     repo = github.get_repo("hacs/integration")
-    commits = new_commits(repo, last_integration_release(github, skip)["tag_sha"])
+    commits = new_commits(repo,
+                          last_integration_release(github, skip)["tag_sha"])
 
     if not commits:
         changes = NOCHANGE
@@ -142,9 +142,9 @@ def get_integration_commits(github, skip=True):
                 continue
             if "\n" in msg:
                 msg = msg.split("\n")[0]
-            changes += CHANGE.format(
-                line=msg, link=commit.html_url, author=commit.author.login
-            )
+            changes += CHANGE.format(line=msg,
+                                     link=commit.html_url,
+                                     author=commit.author.login)
 
     return changes
 
@@ -178,8 +178,7 @@ else:
             body=CHANGES.format(
                 integration_changes=integration_changes,
                 frontend_changes=frontend_changes,
-            )
-            + COMMANDS,
+            ) + COMMANDS,
         )
     else:
         print("Not enough changes for a release.")
