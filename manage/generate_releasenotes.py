@@ -128,7 +128,8 @@ def get_frontend_commits(github, skip=True):
 def get_integration_commits(github, skip=True):
     changes = ""
     repo = github.get_repo("hacs/integration")
-    commits = new_commits(repo, last_integration_release(github, skip)["tag_sha"])
+    commits = new_commits(
+        repo, last_integration_release(github, skip)["tag_sha"])
 
     if not commits:
         changes = NOCHANGE
@@ -148,7 +149,7 @@ def get_integration_commits(github, skip=True):
     return changes
 
 
-## Update release notes:
+# Update release notes:
 UPDATERELEASE = str(sys.argv[4])
 REPO = GITHUB.get_repo("hacs/integration")
 if UPDATERELEASE == "yes":
