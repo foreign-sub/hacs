@@ -1,11 +1,10 @@
 """Register a repository."""
 from aiogithubapi import AIOGitHubException
-from custom_components.hacs.globals import get_hacs
-from custom_components.hacs.hacsbase.exceptions import (
-    HacsException,
-    HacsExpectedException,
-)
 from queueman import concurrent
+
+from custom_components.hacs.globals import get_hacs
+from custom_components.hacs.hacsbase.exceptions import HacsException
+from custom_components.hacs.hacsbase.exceptions import HacsExpectedException
 
 
 # @concurrent(15, 5)
