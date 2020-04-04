@@ -72,7 +72,8 @@ async def hacs_settings(hass, connection, msg):
         for repo in hacs.repositories:
             if msg.get("category") == repo.data.category:
                 if repo.status.new:
-                    hacs.logger.debug(f"Clearing new flag from '{repo.data.full_name}'")
+                    hacs.logger.debug(
+                        f"Clearing new flag from '{repo.data.full_name}'")
                     repo.status.new = False
     else:
         hacs.logger.error(f"WS action '{action}' is not valid")
@@ -362,7 +363,8 @@ async def get_critical_repositories(hass, connection, msg):
 
 @websocket_api.async_response
 @websocket_api.websocket_command(
-    {vol.Required("type"): "hacs/critical", vol.Optional("repository"): cv.string}
+    {vol.Required("type"): "hacs/critical",
+     vol.Optional("repository"): cv.string}
 )
 async def acknowledge_critical_repository(hass, connection, msg):
     """Handle get media player cover command."""

@@ -71,7 +71,8 @@ async def common_update_data(repository):
             if release.tag_name == repository.ref:
                 assets = release.assets
                 if assets:
-                    downloads = next(iter(assets)).attributes.get("download_count")
+                    downloads = next(iter(assets)).attributes.get(
+                        "download_count")
                     repository.releases.downloads = downloads
 
     repository.logger.debug(
