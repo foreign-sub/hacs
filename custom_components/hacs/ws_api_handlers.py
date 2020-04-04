@@ -29,13 +29,11 @@ async def setup_ws_api(hass):
 
 
 @websocket_api.async_response
-@websocket_api.websocket_command(
-    {
-        vol.Required("type"): "hacs/settings",
-        vol.Optional("action"): cv.string,
-        vol.Optional("category"): cv.string,
-    }
-)
+@websocket_api.websocket_command({
+    vol.Required("type"): "hacs/settings",
+    vol.Optional("action"): cv.string,
+    vol.Optional("category"): cv.string,
+})
 async def hacs_settings(hass, connection, msg):
     """Handle get media player cover command."""
     hacs = get_hacs()
@@ -74,7 +72,8 @@ async def hacs_settings(hass, connection, msg):
         for repo in hacs.repositories:
             if msg.get("category") == repo.data.category:
                 if repo.status.new:
-                    hacs.logger.debug(f"Clearing new flag from '{repo.data.full_name}'")
+                    hacs.logger.debug(
+                        f"Clearing new flag from '{repo.data.full_name}'")
                     repo.status.new = False
     else:
         hacs.logger.error(f"WS action '{action}' is not valid")
@@ -176,13 +175,11 @@ async def hacs_repositories(hass, connection, msg):
 
 
 @websocket_api.async_response
-@websocket_api.websocket_command(
-    {
-        vol.Required("type"): "hacs/repository",
-        vol.Optional("action"): cv.string,
-        vol.Optional("repository"): cv.string,
-    }
-)
+@websocket_api.websocket_command({
+    vol.Required("type"): "hacs/repository",
+    vol.Optional("action"): cv.string,
+    vol.Optional("repository"): cv.string,
+})
 async def hacs_repository(hass, connection, msg):
     """Handle get media player cover command."""
     hacs = get_hacs()
@@ -258,14 +255,12 @@ async def hacs_repository(hass, connection, msg):
 
 
 @websocket_api.async_response
-@websocket_api.websocket_command(
-    {
-        vol.Required("type"): "hacs/repository/data",
-        vol.Optional("action"): cv.string,
-        vol.Optional("repository"): cv.string,
-        vol.Optional("data"): cv.string,
-    }
-)
+@websocket_api.websocket_command({
+    vol.Required("type"): "hacs/repository/data",
+    vol.Optional("action"): cv.string,
+    vol.Optional("repository"): cv.string,
+    vol.Optional("data"): cv.string,
+})
 async def hacs_repository_data(hass, connection, msg):
     """Handle get media player cover command."""
     hacs = get_hacs()
@@ -335,9 +330,10 @@ async def hacs_repository_data(hass, connection, msg):
 
 
 @websocket_api.async_response
-@websocket_api.websocket_command(
-    {vol.Required("type"): "hacs/check_path", vol.Optional("path"): cv.string}
-)
+@websocket_api.websocket_command({
+    vol.Required("type"): "hacs/check_path",
+    vol.Optional("path"): cv.string
+})
 async def check_local_path(hass, connection, msg):
     """Handle get media player cover command."""
     path = msg.get("path")
@@ -363,9 +359,10 @@ async def get_critical_repositories(hass, connection, msg):
 
 
 @websocket_api.async_response
-@websocket_api.websocket_command(
-    {vol.Required("type"): "hacs/critical", vol.Optional("repository"): cv.string}
-)
+@websocket_api.websocket_command({
+    vol.Required("type"): "hacs/critical",
+    vol.Optional("repository"): cv.string
+})
 async def acknowledge_critical_repository(hass, connection, msg):
     """Handle get media player cover command."""
     repository = msg["repository"]

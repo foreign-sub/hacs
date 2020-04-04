@@ -124,7 +124,8 @@ class Hacs:
         """Get repository by full_name."""
         try:
             for repository in self.repositories:
-                if repository.data.full_name.lower() == repository_full_name.lower():
+                if repository.data.full_name.lower(
+                ) == repository_full_name.lower():
                     return repository
         except Exception:  # pylint: disable=broad-except
             pass
@@ -164,20 +165,14 @@ class Hacs:
         await self.clear_out_removed_repositories()
 
         self.recuring_tasks.append(
-            async_track_time_interval(
-                self.hass, self.recuring_tasks_installed, timedelta(minutes=30)
-            )
-        )
+            async_track_time_interval(self.hass, self.recuring_tasks_installed,
+                                      timedelta(minutes=30)))
         self.recuring_tasks.append(
-            async_track_time_interval(
-                self.hass, self.recuring_tasks_all, timedelta(minutes=800)
-            )
-        )
+            async_track_time_interval(self.hass, self.recuring_tasks_all,
+                                      timedelta(minutes=800)))
         self.recuring_tasks.append(
-            async_track_time_interval(
-                self.hass, self.prosess_queue, timedelta(minutes=10)
-            )
-        )
+            async_track_time_interval(self.hass, self.prosess_queue,
+                                      timedelta(minutes=10)))
 
         self.hass.bus.async_fire("hacs/reload", {"force": True})
         await self.recuring_tasks_installed()
@@ -202,8 +197,7 @@ class Hacs:
         if alert:
             self.logger.critical("URGENT!: Check the HACS panel!")
             self.hass.components.persistent_notification.create(
-                title="URGENT!", message="**Check the HACS panel!**"
-            )
+                title="URGENT!", message="**Check the HACS panel!**")
 
     async def handle_critical_repositories(self):
         """Handled critical repositories during runtime."""
@@ -273,8 +267,7 @@ class Hacs:
         can_update = await get_fetch_updates_for(self.github)
         if can_update == 0:
             self.logger.info(
-                "HACS is ratelimited, repository updates will resume later."
-            )
+                "HACS is ratelimited, repository updates will resume later.")
         else:
             self.system.status.background_task = True
             self.hass.bus.async_fire("hacs/status", {})
@@ -285,28 +278,27 @@ class Hacs:
     async def recuring_tasks_installed(self, notarealarg=None):
         """Recuring tasks for installed repositories."""
         self.logger.debug(
-            "Starting recuring background task for installed repositories"
-        )
+            "Starting recuring background task for installed repositories")
         self.system.status.background_task = True
         self.hass.bus.async_fire("hacs/status", {})
         self.logger.debug(self.github.ratelimits.remaining)
         self.logger.debug(self.github.ratelimits.reset_utc)
         for repository in self.repositories:
-            if (
-                repository.status.installed
-                and repository.data.category in self.common.categories
-            ):
+            if (repository.status.installed
+                    and repository.data.category in self.common.categories):
                 self.queue.add(self.factory.safe_update(repository))
 
         await self.handle_critical_repositories()
         self.system.status.background_task = False
         self.hass.bus.async_fire("hacs/status", {})
         await self.data.async_write()
-        self.logger.debug("Recuring background task for installed repositories done")
+        self.logger.debug(
+            "Recuring background task for installed repositories done")
 
     async def recuring_tasks_all(self, notarealarg=None):
         """Recuring tasks for all repositories."""
-        self.logger.debug("Starting recuring background task for all repositories")
+        self.logger.debug(
+            "Starting recuring background task for all repositories")
         await self.hass.async_add_executor_job(setup_extra_stores)
         self.system.status.background_task = True
         self.hass.bus.async_fire("hacs/status", {})
@@ -333,9 +325,9 @@ class Hacs:
                 if repository.status.installed and removed.removal_type != "critical":
                     self.logger.warning(
                         f"You have {repository.data.full_name} installed with HACS "
-                        + f"this repository has been removed, please consider removing it. "
-                        + f"Removal reason ({removed.removal_type})"
-                    )
+                        +
+                        f"this repository has been removed, please consider removing it. "
+                        + f"Removal reason ({removed.removal_type})")
                 else:
                     need_to_save = True
                     repository.remove()
@@ -348,8 +340,7 @@ class Hacs:
         repositories = {}
         for category in self.common.categories:
             repositories[category] = await get_default_repos_lists(
-                self.session, self.configuration.token, category
-            )
+                self.session, self.configuration.token, category)
             org = await get_default_repos_orgs(self.github, category)
             for repo in org:
                 repositories[category].append(repo)
@@ -365,9 +356,9 @@ class Hacs:
         self.logger.info("Loading known repositories")
         repositories = await self.get_repositories()
 
-        for item in await get_default_repos_lists(
-            self.session, self.configuration.token, "removed"
-        ):
+        for item in await get_default_repos_lists(self.session,
+                                                  self.configuration.token,
+                                                  "removed"):
             removed = get_removed(item["repository"])
             removed.reason = item.get("reason")
             removed.link = item.get("link")
