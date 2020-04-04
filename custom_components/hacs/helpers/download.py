@@ -56,18 +56,15 @@ def gather_files_to_download(repository):
         for treefile in tree:
             if treefile.filename == repository.data.file_name:
                 files.append(
-                    FileInformation(
-                        treefile.download_url, treefile.full_path, treefile.filename
-                    )
-                )
+                    FileInformation(treefile.download_url, treefile.full_path,
+                                    treefile.filename))
         return files
 
     if category == "plugin":
         for treefile in tree:
             if treefile.path in ["", "dist"]:
                 if remotelocation == "dist" and not treefile.filename.startswith(
-                    "dist"
-                ):
+                        "dist"):
                     continue
                 if not remotelocation:
                     if not treefile.filename.endswith(".js"):
@@ -76,10 +73,8 @@ def gather_files_to_download(repository):
                         continue
                 if not treefile.is_directory:
                     files.append(
-                        FileInformation(
-                            treefile.download_url, treefile.full_path, treefile.filename
-                        )
-                    )
+                        FileInformation(treefile.download_url,
+                                        treefile.full_path, treefile.filename))
         if files:
             return files
 
@@ -87,16 +82,15 @@ def gather_files_to_download(repository):
         if not repository.data.filename:
             if category == "theme":
                 tree = filter_content_return_one_of_type(
-                    repository.tree, "", "yaml", "full_path"
-                )
+                    repository.tree, "", "yaml", "full_path")
 
     for path in tree:
         if path.is_directory:
             continue
         if path.full_path.startswith(repository.content.path.remote):
             files.append(
-                FileInformation(path.download_url, path.full_path, path.filename)
-            )
+                FileInformation(path.download_url, path.full_path,
+                                path.filename))
     return files
 
 
@@ -106,8 +100,7 @@ async def download_zip(repository, validate):
     try:
         for release in repository.releases.objects:
             repository.logger.info(
-                f"ref: {repository.ref}  ---  tag: {release.tag_name}"
-            )
+                f"ref: {repository.ref}  ---  tag: {release.tag_name}")
             if release.tag_name == repository.ref.split("/")[1]:
                 contents = release.assets
 
@@ -122,11 +115,11 @@ async def download_zip(repository, validate):
                 continue
 
             result = await async_save_file(
-                f"{tempfile.gettempdir()}/{repository.data.filename}", filecontent
-            )
+                f"{tempfile.gettempdir()}/{repository.data.filename}",
+                filecontent)
             with zipfile.ZipFile(
-                f"{tempfile.gettempdir()}/{repository.data.filename}", "r"
-            ) as zip_file:
+                    f"{tempfile.gettempdir()}/{repository.data.filename}",
+                    "r") as zip_file:
                 zip_file.extractall(repository.content.path.local)
 
             os.remove(f"{tempfile.gettempdir()}/{repository.data.filename}")
@@ -165,7 +158,8 @@ async def dowload_repository_content(repository, content):
     filecontent = await async_download_file(content.download_url)
 
     if filecontent is None:
-        repository.validate.errors.append(f"[{content.name}] was not downloaded.")
+        repository.validate.errors.append(
+            f"[{content.name}] was not downloaded.")
         return
 
     # Save the content of the file.
@@ -176,8 +170,7 @@ async def dowload_repository_content(repository, content):
         _content_path = content.path
         if not repository.data.content_in_root:
             _content_path = _content_path.replace(
-                f"{repository.content.path.remote}", ""
-            )
+                f"{repository.content.path.remote}", "")
 
         local_directory = f"{repository.content.path.local}/{_content_path}"
         local_directory = local_directory.split("/")

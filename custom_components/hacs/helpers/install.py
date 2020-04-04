@@ -34,7 +34,7 @@ async def install_repository(repository):
 
     elif repository.data.persistent_directory:
         if os.path.exists(
-            f"{repository.content.path.local}/{repository.data.persistent_directory}"
+                f"{repository.content.path.local}/{repository.data.persistent_directory}"
         ):
             persistent_directory = Backup(
                 f"{repository.content.path.local}/{repository.data.persistent_directory}",
@@ -67,7 +67,8 @@ async def install_repository(repository):
     if repository.validate.success:
         if repository.data.full_name not in repository.hacs.common.installed:
             if repository.data.full_name == "hacs/integration":
-                repository.hacs.common.installed.append(repository.data.full_name)
+                repository.hacs.common.installed.append(
+                    repository.data.full_name)
         repository.status.installed = True
         repository.versions.installed_commit = repository.versions.available_commit
 
@@ -91,15 +92,13 @@ async def reload_after_install(repository):
     elif repository.data.category == "theme":
         try:
             await repository.hacs.hass.services.async_call(
-                "frontend", "reload_themes", {}
-            )
+                "frontend", "reload_themes", {})
         except Exception:  # pylint: disable=broad-except
             pass
     elif repository.data.category == "netdaemon":
         try:
             await repository.hacs.hass.services.async_call(
-                "hassio", "addon_restart", {"addon": "c6a2317c_netdaemon"}
-            )
+                "hassio", "addon_restart", {"addon": "c6a2317c_netdaemon"})
         except Exception:  # pylint: disable=broad-except
             pass
 
@@ -109,7 +108,11 @@ def installation_complete(repository):
     hacs = get_hacs()
     hacs.hass.bus.async_fire(
         "hacs/repository",
-        {"id": 1337, "action": "install", "repository": repository.data.full_name},
+        {
+            "id": 1337,
+            "action": "install",
+            "repository": repository.data.full_name
+        },
     )
 
 
