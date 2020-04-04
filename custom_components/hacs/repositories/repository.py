@@ -304,7 +304,8 @@ class HacsRepository:
             contents = False
 
             for release in self.releases.objects:
-                self.logger.info(f"ref: {self.ref}  ---  tag: {release.tag_name}")
+                self.logger.info(
+                    f"ref: {self.ref}  ---  tag: {release.tag_name}")
                 if release.tag_name == self.ref.split("/")[1]:
                     contents = release.assets
 
@@ -315,7 +316,8 @@ class HacsRepository:
                 filecontent = await async_download_file(content.download_url)
 
                 if filecontent is None:
-                    validate.errors.append(f"[{content.name}] was not downloaded.")
+                    validate.errors.append(
+                        f"[{content.name}] was not downloaded.")
                     continue
 
                 result = await async_save_file(
@@ -400,7 +402,8 @@ class HacsRepository:
 
         try:
             if self.data.category == "python_script":
-                local_path = "{}/{}.py".format(self.content.path.local, self.data.name)
+                local_path = "{}/{}.py".format(
+                    self.content.path.local, self.data.name)
             elif self.data.category == "theme":
                 if os.path.exists(
                     f"{self.hacs.system.config_path}/{self.hacs.configuration.theme_path}/{self.data.name}.yaml"

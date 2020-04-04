@@ -300,11 +300,13 @@ class Hacs:
         self.system.status.background_task = False
         self.hass.bus.async_fire("hacs/status", {})
         await self.data.async_write()
-        self.logger.debug("Recuring background task for installed repositories done")
+        self.logger.debug(
+            "Recuring background task for installed repositories done")
 
     async def recuring_tasks_all(self, notarealarg=None):
         """Recuring tasks for all repositories."""
-        self.logger.debug("Starting recuring background task for all repositories")
+        self.logger.debug(
+            "Starting recuring background task for all repositories")
         await self.hass.async_add_executor_job(setup_extra_stores)
         self.system.status.background_task = True
         self.hass.bus.async_fire("hacs/status", {})

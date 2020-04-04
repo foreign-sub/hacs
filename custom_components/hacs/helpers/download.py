@@ -91,7 +91,8 @@ def gather_files_to_download(repository):
             continue
         if path.full_path.startswith(repository.content.path.remote):
             files.append(
-                FileInformation(path.download_url, path.full_path, path.filename)
+                FileInformation(path.download_url,
+                                path.full_path, path.filename)
             )
     return files
 
@@ -161,7 +162,8 @@ async def dowload_repository_content(repository, content):
     filecontent = await async_download_file(content.download_url)
 
     if filecontent is None:
-        repository.validate.errors.append(f"[{content.name}] was not downloaded.")
+        repository.validate.errors.append(
+            f"[{content.name}] was not downloaded.")
         return
 
     # Save the content of the file.
