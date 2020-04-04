@@ -143,8 +143,7 @@ async def hacs_startup():
 
     can_update = await get_fetch_updates_for(hacs.github)
     if can_update == 0:
-        hacs.logger.info(
-            "HACS is ratelimited, repository updates will resume in 1h.")
+        hacs.logger.info("HACS is ratelimited, repository updates will resume in 1h.")
     else:
         hacs.logger.debug(f"Can update {can_update} repositories")
 
@@ -199,8 +198,7 @@ async def hacs_startup():
 
     # Setup startup tasks
     if hacs.configuration.config_type == "yaml":
-        hacs.hass.bus.async_listen_once(
-            EVENT_HOMEASSISTANT_START, hacs.startup_tasks())
+        hacs.hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START, hacs.startup_tasks())
     else:
         async_call_later(hacs.hass, 5, hacs.startup_tasks())
 
