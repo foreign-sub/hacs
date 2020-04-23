@@ -6,12 +6,14 @@ import os
 import sys
 
 import aiohttp
-from aiogithubapi import AIOGitHub, AIOGitHubException
+from aiogithubapi import AIOGitHub
+from aiogithubapi import AIOGitHubException
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
+
 from custom_components.hacs.globals import get_hacs
 from custom_components.hacs.hacsbase.configuration import Configuration
 from custom_components.hacs.helpers.register_repository import \
     register_repository
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.DEBUG)
