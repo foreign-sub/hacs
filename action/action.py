@@ -32,7 +32,7 @@ CATEGORIES = [
     "netdaemon",
     "plugin",
     "python_script",
-    "theme"
+    "theme",
 ]
 
 
