@@ -1,15 +1,17 @@
 """Validate a GitHub repository to be used with HACS."""
-import sys
-import os
 import asyncio
-import logging
-import aiohttp
 import json
+import logging
+import os
+import sys
+
+import aiohttp
 from aiogithubapi import AIOGitHub, AIOGitHubException
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from custom_components.hacs.globals import get_hacs
 from custom_components.hacs.hacsbase.configuration import Configuration
-from custom_components.hacs.helpers.register_repository import register_repository
+from custom_components.hacs.helpers.register_repository import \
+    register_repository
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.DEBUG)
