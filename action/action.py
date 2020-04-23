@@ -35,6 +35,7 @@ CATEGORIES = [
     "theme"
 ]
 
+
 def chose_repository(category):
     if os.getenv("GITHUB_REPOSITORY") != "hacs/default":
         return os.getenv("GITHUB_REPOSITORY")
@@ -47,17 +48,19 @@ def chose_repository(category):
 
     for repo in current:
         new.remove(repo)
-    
+
     if len(new) != 1:
         print(f"{new} is not a single repo")
         exit(1)
 
     return new[0]
 
+
 def chose_category():
     for name in os.getenv("CHANGED_FILES", "").split(" "):
         if name in CATEGORIES:
             return name
+
 
 async def preflight():
     """Preflight cheks."""
@@ -103,7 +106,6 @@ async def validate_repository(repository, category):
         hacs.github = AIOGitHub(hacs.configuration.token, hacs.session)
         await register_repository(repository, category)
         print("All good!")
-
 
 
 LOOP = asyncio.get_event_loop()
