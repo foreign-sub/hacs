@@ -147,9 +147,13 @@ class HacsRepository:
     @property
     def custom(self):
         """Return flag if the repository is custom."""
-        if self.data.full_name.split("/")[0] in ["custom-components", "custom-cards"]:
+        if self.data.full_name.split("/")[0] in [
+                "custom-components", "custom-cards"
+        ]:
             return False
-        if self.data.full_name.lower() in [x.lower() for x in self.hacs.common.default]:
+        if self.data.full_name.lower() in [
+                x.lower() for x in self.hacs.common.default
+        ]:
             return False
         if self.data.full_name == "hacs/integration":
             return False
@@ -168,8 +172,7 @@ class HacsRepository:
         if target is not None:
             if self.releases.releases:
                 if not version_left_higher_then_right(
-                    self.hacs.system.ha_version, target
-                ):
+                        self.hacs.system.ha_version, target):
                     return False
         return True
 
@@ -259,8 +262,8 @@ class HacsRepository:
         # Attach repository
         if self.repository_object is None:
             self.repository_object = await get_repository(
-                self.hacs.session, self.hacs.configuration.token, self.data.full_name
-            )
+                self.hacs.session, self.hacs.configuration.token,
+                self.data.full_name)
             self.data.update_data(self.repository_object.attributes)
 
         # Set id
@@ -276,7 +279,8 @@ class HacsRepository:
         self.data.description = self.data.description
 
         if self.hacs.action:
-            if self.data.description is None or len(self.data.description) == 0:
+            if self.data.description is None or len(
+                    self.data.description) == 0:
                 raise HacsException("Missing repository description")
 
     async def common_update(self):
@@ -288,8 +292,7 @@ class HacsRepository:
 
         # Update last updaeted
         self.information.last_updated = self.repository_object.attributes.get(
-            "pushed_at", 0
-        )
+            "pushed_at", 0)
 
         # Update last available commit
         await self.repository_object.set_last_commit()
@@ -311,7 +314,8 @@ class HacsRepository:
             contents = False
 
             for release in self.releases.objects:
-                self.logger.info(f"ref: {self.ref}  ---  tag: {release.tag_name}")
+                self.logger.info(
+                    f"ref: {self.ref}  ---  tag: {release.tag_name}")
                 if release.tag_name == self.ref.split("/")[1]:
                     contents = release.assets
 
@@ -322,15 +326,16 @@ class HacsRepository:
                 filecontent = await async_download_file(content.download_url)
 
                 if filecontent is None:
-                    validate.errors.append(f"[{content.name}] was not downloaded.")
+                    validate.errors.append(
+                        f"[{content.name}] was not downloaded.")
                     continue
 
                 result = await async_save_file(
-                    f"{tempfile.gettempdir()}/{self.data.filename}", filecontent
-                )
+                    f"{tempfile.gettempdir()}/{self.data.filename}",
+                    filecontent)
                 with zipfile.ZipFile(
-                    f"{tempfile.gettempdir()}/{self.data.filename}", "r"
-                ) as zip_file:
+                        f"{tempfile.gettempdir()}/{self.data.filename}",
+                        "r") as zip_file:
                     zip_file.extractall(self.content.path.local)
 
                 if result:
@@ -342,7 +347,8 @@ class HacsRepository:
 
         return validate
 
-    async def download_content(self, validate, directory_path, local_directory, ref):
+    async def download_content(self, validate, directory_path, local_directory,
+                               ref):
         """Download the content of a directory."""
         from custom_components.hacs.helpers.download import download_content
 
@@ -353,7 +359,8 @@ class HacsRepository:
         """Get the content of the hacs.json file."""
         if not "hacs.json" in [x.filename for x in self.tree]:
             if self.hacs.action:
-                raise HacsException("No hacs.json file in the root of the repository.")
+                raise HacsException(
+                    "No hacs.json file in the root of the repository.")
             return
         if self.hacs.action:
             self.logger.debug("Found hacs.json")
@@ -361,14 +368,16 @@ class HacsRepository:
         if self.ref is None:
             self.ref = version_to_install(self)
         try:
-            manifest = await self.repository_object.get_contents("hacs.json", self.ref)
+            manifest = await self.repository_object.get_contents(
+                "hacs.json", self.ref)
             self.repository_manifest = HacsManifest.from_dict(
-                json.loads(manifest.content)
-            )
+                json.loads(manifest.content))
             self.data.update_data(json.loads(manifest.content))
-        except (AIOGitHubException, Exception) as exception:  # Gotta Catch 'Em All
+        except (AIOGitHubException,
+                Exception) as exception:  # Gotta Catch 'Em All
             if self.hacs.action:
-                raise HacsException(f"hacs.json file is not valid ({exception}).")
+                raise HacsException(
+                    f"hacs.json file is not valid ({exception}).")
         if self.hacs.action:
             self.logger.debug("hacs.json is valid")
 
@@ -395,8 +404,7 @@ class HacsRepository:
         elif self.data.category == "theme":
             try:
                 await self.hacs.hass.services.async_call(
-                    "frontend", "reload_themes", {}
-                )
+                    "frontend", "reload_themes", {})
             except Exception:  # pylint: disable=broad-except
                 pass
         if self.data.full_name in self.hacs.common.installed:
@@ -405,7 +413,11 @@ class HacsRepository:
         self.versions.installed_commit = None
         self.hacs.hass.bus.async_fire(
             "hacs/repository",
-            {"id": 1337, "action": "uninstall", "repository": self.data.full_name},
+            {
+                "id": 1337,
+                "action": "uninstall",
+                "repository": self.data.full_name
+            },
         )
 
     async def remove_local_directory(self):
@@ -415,10 +427,11 @@ class HacsRepository:
 
         try:
             if self.data.category == "python_script":
-                local_path = "{}/{}.py".format(self.content.path.local, self.data.name)
+                local_path = "{}/{}.py".format(self.content.path.local,
+                                               self.data.name)
             elif self.data.category == "theme":
                 if os.path.exists(
-                    f"{self.hacs.system.config_path}/{self.hacs.configuration.theme_path}/{self.data.name}.yaml"
+                        f"{self.hacs.system.config_path}/{self.hacs.configuration.theme_path}/{self.data.name}.yaml"
                 ):
                     os.remove(
                         f"{self.hacs.system.config_path}/{self.hacs.configuration.theme_path}/{self.data.name}.yaml"
