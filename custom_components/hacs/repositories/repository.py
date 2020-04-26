@@ -312,8 +312,7 @@ class HacsRepository:
             contents = False
 
             for release in self.releases.objects:
-                self.logger.info(
-                    f"ref: {self.ref}  ---  tag: {release.tag_name}")
+                self.logger.info(f"ref: {self.ref}  ---  tag: {release.tag_name}")
                 if release.tag_name == self.ref.split("/")[1]:
                     contents = release.assets
 
@@ -324,8 +323,7 @@ class HacsRepository:
                 filecontent = await async_download_file(content.download_url)
 
                 if filecontent is None:
-                    validate.errors.append(
-                        f"[{content.name}] was not downloaded.")
+                    validate.errors.append(f"[{content.name}] was not downloaded.")
                     continue
 
                 result = await async_save_file(
@@ -356,8 +354,7 @@ class HacsRepository:
         """Get the content of the hacs.json file."""
         if not "hacs.json" in [x.filename for x in self.tree]:
             if self.hacs.action:
-                raise HacsException(
-                    "No hacs.json file in the root of the repository.")
+                raise HacsException("No hacs.json file in the root of the repository.")
             return
         if self.hacs.action:
             self.logger.debug("Found hacs.json")
@@ -372,8 +369,7 @@ class HacsRepository:
             self.data.update_data(json.loads(manifest.content))
         except (AIOGitHubException, Exception) as exception:  # Gotta Catch 'Em All
             if self.hacs.action:
-                raise HacsException(
-                    f"hacs.json file is not valid ({exception}).")
+                raise HacsException(f"hacs.json file is not valid ({exception}).")
         if self.hacs.action:
             self.logger.debug("hacs.json is valid")
 
@@ -420,8 +416,7 @@ class HacsRepository:
 
         try:
             if self.data.category == "python_script":
-                local_path = "{}/{}.py".format(
-                    self.content.path.local, self.data.name)
+                local_path = "{}/{}.py".format(self.content.path.local, self.data.name)
             elif self.data.category == "theme":
                 if os.path.exists(
                     f"{self.hacs.system.config_path}/{self.hacs.configuration.theme_path}/{self.data.name}.yaml"
