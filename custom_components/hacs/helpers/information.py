@@ -1,7 +1,9 @@
 """Return repository information if any."""
 import json
 
-from aiogithubapi import AIOGitHub, AIOGitHubException
+from aiogithubapi import AIOGitHub
+from aiogithubapi import AIOGitHubException
+
 from custom_components.hacs.hacsbase.exceptions import HacsException
 from custom_components.hacs.handler.template import render_template
 
