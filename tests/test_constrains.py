@@ -2,15 +2,13 @@
 # pylint: disable=missing-docstring,invalid-name
 import os
 import sys
-from custom_components.hacs.globals import get_hacs
-from custom_components.hacs.constrains import (
-    constrain_translations,
-    constrain_custom_updater,
-    constrain_version,
-    check_requirements,
-    check_constans,
-)
 
+from custom_components.hacs.constrains import (check_constans,
+                                               check_requirements,
+                                               constrain_custom_updater,
+                                               constrain_translations,
+                                               constrain_version)
+from custom_components.hacs.globals import get_hacs
 
 HAVERSION = "9.99.9"
 
