@@ -27,8 +27,7 @@ def constrain_custom_updater():
     for location in CUSTOM_UPDATER_LOCATIONS:
         if os.path.exists(location.format(hacs.system.config_path)):
             msg = CUSTOM_UPDATER_WARNING.format(
-                location.format(hacs.system.config_path)
-            )
+                location.format(hacs.system.config_path))
             hacs.logger.critical(msg)
             return False
     return True
@@ -37,7 +36,8 @@ def constrain_custom_updater():
 def constrain_version():
     """Check if the version is valid."""
     hacs = get_hacs()
-    if not version_left_higher_then_right(hacs.system.ha_version, MINIMUM_HA_VERSION):
+    if not version_left_higher_then_right(hacs.system.ha_version,
+                                          MINIMUM_HA_VERSION):
         hacs.logger.critical(
             f"You need HA version {MINIMUM_HA_VERSION} or newer to use this integration."
         )
@@ -49,8 +49,7 @@ def constrain_translations():
     """Check if traslations exist."""
     hacs = get_hacs()
     if not os.path.exists(
-        f"{hacs.system.config_path}/custom_components/hacs/translations"
-    ):
+            f"{hacs.system.config_path}/custom_components/hacs/translations"):
         hacs.logger.critical("You are missing the translations directory.")
         return False
     return True
